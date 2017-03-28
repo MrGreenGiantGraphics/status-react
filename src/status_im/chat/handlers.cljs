@@ -4,7 +4,7 @@
             [status-im.models.commands :as commands]
             [clojure.string :as string]
             [status-im.components.styles :refer [default-chat-color]]
-            [status-im.chat.suggestions :as suggestions]
+            [status-im.chat.models.suggestions :as suggestions]
             [status-im.chat.constants :as chat-consts]
             [status-im.protocol.core :as protocol]
             [status-im.data-store.chats :as chats]
@@ -54,9 +54,7 @@
 (register-handler :toggle-chat-ui-props
   (fn [{:keys [current-chat-id chat-ui-props] :as db} [_ ui-element chat-id]]
     (let [chat-id (or chat-id current-chat-id)]
-      (assoc-in db
-                [:chat-ui-props chat-id ui-element]
-                (not (get-in chat-ui-props [chat-id ui-element]))))))
+      (update-in db [:chat-ui-props chat-id ui-element] not))))
 
 (register-handler :show-message-details
   (u/side-effect!
@@ -235,10 +233,7 @@
   (let [chat-id          (or id current-chat-id)
         messages         (get-in db [:chats chat-id :messages])
         command?         (= :command (get-in db [:edit-mode chat-id]))
-        db'              (-> db
-                             (assoc :current-chat-id chat-id)
-                             (update-in [:animations :to-response-height chat-id]
-                                        #(if command? % 0)))
+        db'              (assoc db :current-chat-id chat-id)
         commands-loaded? (if js/goog.DEBUG
                            false
                            (get-in db [:chats chat-id :commands-loaded]))]
@@ -445,7 +440,7 @@
 
 (register-handler :check-autorun
   (u/side-effect!
-    (fn [{:keys [current-chat-id] :as db}]
+    (fn [{:keys [current-chat-id contacts] :as db}]
       (let [autorun (get-in db [:chats current-chat-id :autorun])]
         (when autorun
           (am/go
