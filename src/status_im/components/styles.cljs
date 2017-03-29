@@ -1,4 +1,5 @@
-(ns status-im.components.styles)
+(ns status-im.components.styles
+  (:require-macros [status-im.utils.styles :refer [defstyle]]))
 
 (def color-transparent "transparent")
 (def color-blue "#7099e6")
@@ -92,12 +93,20 @@
   {:flex          1
    :flexDirection :column})
 
-(def confirm-button
+(def sticky-button
   {:flex-direction   :row
    :height           52
    :justify-content  :center
    :align-items      :center
    :background-color color-light-blue})
+
+(defstyle sticky-button-label
+  {:color   color-white
+   :ios     {:font-size      17
+             :line-height    20
+             :letter-spacing -0.2}
+   :android {:font-size      14
+             :letter-spacing 0.5}})
 
 (defn context-menu-options [custom-styles]
   {:customStyles {:optionsContainer

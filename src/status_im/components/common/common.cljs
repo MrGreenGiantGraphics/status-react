@@ -28,6 +28,12 @@
 (defn list-separator []
   [separator st/list-separator])
 
+(defn list-footer []
+  [view st/list-header-footer-spacing])
+
+(defn list-header []
+ [view st/list-header-footer-spacing])
+
 (defn form-title [label & [count-value]]
   [view
    [view st/form-title-container

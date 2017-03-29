@@ -115,9 +115,6 @@
                                                       :line-height 24}
                            :add-to-contacts-text     {:font-size      14
                                                       :letter-spacing 0.5}}
-   :confirm-button-label  {:color          styles/color-white
-                           :font-size      14
-                           :letter-spacing 0.5}
    :bottom-gradient       {:height 3}
    :input-label           {:left 4}
    :input-error-text      {:margin-left 4}

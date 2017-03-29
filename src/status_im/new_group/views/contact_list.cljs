@@ -6,7 +6,7 @@
                                                 text
                                                 list-view
                                                 list-item]]
-            [status-im.components.confirm-button :refer [confirm-button]]
+            [status-im.components.sticky-button :refer [sticky-button]]
             [status-im.components.status-bar :refer [status-bar]]
             [status-im.components.toolbar-new.view :refer [toolbar-with-search]]
             [status-im.utils.listview :refer [to-datasource]]

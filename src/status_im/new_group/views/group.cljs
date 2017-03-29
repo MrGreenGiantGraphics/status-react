@@ -2,7 +2,7 @@
   (:require-macros [status-im.utils.views :refer [defview]])
   (:require [re-frame.core :refer [dispatch]]
     [status-im.contacts.styles :as cst]
-    [status-im.components.common.common :as cmn]
+    [status-im.components.common.common :as common]
     [status-im.components.react :refer [view
                                         text
                                         icon
@@ -14,9 +14,6 @@
     [status-im.utils.platform :refer [platform-specific]]
     [status-im.new-group.styles :as st]
     [status-im.i18n :refer [label]]))
-
-(defn separator []
-  [cmn/separator cst/contact-item-separator])
 
 (defview group-name-input []
   [new-group-name [:get :new-chat-name]]
@@ -80,7 +77,7 @@
       [view st/settings-group-text-container
        [text {:style st/settings-group-text}
         (label :t/mute-notifications)]]]]]
-   [separator]
+   [common/list-separator]
    [touchable-highlight {:on-press #(dispatch [:clear-history])}
     [view st/settings-group-item
      [view st/settings-icon-container
@@ -88,7 +85,7 @@
      [view st/settings-group-text-container
       [text {:style st/settings-group-text}
        (label :t/clear-history)]]]]
-   [separator]
+   [common/list-separator]
    [touchable-highlight {:on-press #(dispatch [:leave-group-chat])}
     [view st/settings-group-item
      [view st/delete-icon-container
@@ -99,7 +96,7 @@
 
 (defn more-btn [contacts-limit contacts-count on-press]
   [view
-   [separator]
+   [common/list-separator]
    [view cst/show-all
     [touchable-highlight {:on-press on-press}
      [view

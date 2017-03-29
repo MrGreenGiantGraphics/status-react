@@ -133,10 +133,6 @@
                            :order-item-contacts      {:font-size      17
                                                       :line-height    20
                                                       :letter-spacing -0.2}}
-   :confirm-button-label  {:color          styles/color-white
-                           :font-size      17
-                           :line-height    20
-                           :letter-spacing -0.2}
    :bottom-gradient       {:height 1}
    :input-label           {:left 0}
    :input-error-text      {:margin-left 0}

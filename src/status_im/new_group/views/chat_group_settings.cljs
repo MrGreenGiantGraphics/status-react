@@ -7,7 +7,7 @@
                                         keyboard-avoiding-view
                                         icon
                                         touchable-highlight]]
-    [status-im.components.confirm-button :refer [confirm-button]]
+    [status-im.components.sticky-button :refer [sticky-button]]
     [status-im.new-group.styles :as st]
     [status-im.new-group.views.group :refer [group-toolbar
                                              group-chat-settings-btns
@@ -77,4 +77,4 @@
        [view st/separator]
        [group-chat-settings-btns]]]
      (when save-btn-enabled?
-       [confirm-button (label :t/save) save-chat-name])]))
+       [sticky-button (label :t/save) save-chat-name])]))

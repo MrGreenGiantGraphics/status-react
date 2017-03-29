@@ -11,7 +11,6 @@
                                                 splash-screen
                                                 http-bridge]]
             [status-im.components.main-tabs :refer [main-tabs]]
-            [status-im.contacts.search-results :refer [contacts-search-results]]
             [status-im.contacts.views.contact-list :refer [contact-list]]
             [status-im.contacts.views.contact-list-modal :refer [contact-list-modal]]
             [status-im.contacts.views.new-contact :refer [new-contact]]
@@ -110,7 +109,6 @@
                                :group-settings group-settings
                                :contact-list main-tabs
                                :contact-toggle-list contact-toggle-list
-                               :contact-list-search-results contacts-search-results
                                :group-contacts contact-list
                                :new-contact new-contact
                                :qr-scanner qr-scanner

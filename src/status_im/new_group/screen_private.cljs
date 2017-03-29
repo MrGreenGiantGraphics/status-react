@@ -1,13 +1,15 @@
 (ns status-im.new-group.screen-private
   (:require-macros [status-im.utils.views :refer [defview]])
   (:require [re-frame.core :refer [dispatch]]
-            [status-im.contacts.views.contact :refer [contact-view]]
+            [status-im.components.contact.contact :refer [contact-view]]
+            [status-im.components.common.common :as common]
             [status-im.components.react :refer [view
                                                 scroll-view
                                                 keyboard-avoiding-view
                                                 list-view
                                                 list-item]]
-            [status-im.components.confirm-button :refer [confirm-button]]
+            [status-im.components.renderers.renderers :as renderers]
+            [status-im.components.sticky-button :refer [sticky-button]]
             [status-im.utils.listview :refer [to-datasource]]
             [status-im.new-group.styles :as st]
             [status-im.new-group.views.group :refer [group-toolbar
@@ -29,7 +31,7 @@
    contacts-count [:all-added-group-contacts-count (:group-id group)]]
   [view
    (when (pos? contacts-count)
-     [separator])
+     [common/list-separator])
    [view
     (doall
       (map (fn [row]
@@ -47,9 +49,6 @@
            contacts))]
    (when (< contacts-limit contacts-count)
      [more-btn contacts-limit contacts-count #(dispatch [:navigate-to :edit-group-contact-list])])])
-
-(defn save []
-  (dispatch [:set-group-name]))
 
 (defview edit-group []
   [group-name [:get :new-chat-name]
@@ -69,17 +68,12 @@
                      (dispatch [:delete-group])
                      (dispatch [:navigate-to-clean :contact-list]))]]
      (when save-btn-enabled?
-       [confirm-button (label :t/save) save])]))
-
-(defn render-separator [_ row-id _]
-  (list-item ^{:key row-id}
-             [separator]))
+       [sticky-button (label :t/save) #(dispatch [:set-group-name])])]))
 
 (defn render-row [row _ _]
   (list-item
     ^{:key row}
-    [contact-view {:contact   row
-                   :on-click  #()}]))
+    [contact-view {:contact row}]))
 
 (defview new-group []
   [contacts [:selected-group-contacts]
@@ -96,9 +90,9 @@
                   :renderRow                 render-row
                   :bounces                   false
                   :keyboardShouldPersistTaps true
-                  :renderSeparator           render-separator}]]
+                  :renderSeparator           renderers/list-separator-renderer}]]
      (when save-btn-enabled?
-       [confirm-button (label :t/save)
+       [sticky-button (label :t/save)
         (if (= group-type :contact-group)
           #(dispatch [:create-new-group group-name])
           #(dispatch [:create-new-group-chat group-name]))])]))

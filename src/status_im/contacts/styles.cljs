@@ -64,37 +64,6 @@
 (def show-all-text
   (get-in p/platform-specific [:component-styles :contacts :show-all-text]))
 
-(def contact-item-separator
-  {:margin-left      72})
-
-(def contact-container
-  (merge (get-in p/platform-specific [:component-styles :contacts :contact-container])
-         {:flex-direction   :row
-          :align-items      :center
-          :background-color color-white}))
-
-(def letter-container
-  {:paddingTop  11
-   :paddingLeft 20
-   :width       56})
-
-(def letter-text
-  {:fontSize 24
-   :color    text3-color})
-
-(def option-inner-container
-  {:flex                1
-   :flex-direction      :row
-   :height              56
-   :background-color    color-white
-   :border-bottom-color color-separator
-   :border-bottom-width 0.5})
-
-(def option-inner
-  {:width       48
-   :height      48
-   :margin-top  4
-   :margin-left 12})
 
 (def option-inner-image
   {:width  24
@@ -105,37 +74,6 @@
 (def group-icon
   (assoc option-inner-image
     :tint-color color-gray))
-
-(def contact-list-spacing
-  (get-in p/platform-specific [:component-styles :contacts :contact-list-spacing]))
-
-(def contact-inner-container
-  (merge (get-in p/platform-specific [:component-styles :contacts :contact-inner-container])
-         {:flex            1
-          :flexDirection   :row
-          :align-items     :center
-          :padding-left    16
-          :backgroundColor color-white}))
-
-(def info-container
-  (merge (get-in p/platform-specific [:component-styles :contacts :info-container])
-         {:flex          1
-          :flexDirection :column}))
-
-(def name-text
-  (get-in p/platform-specific [:component-styles :contacts :name-text]))
-
-(def info-text
-  {:marginTop 1
-   :fontSize  12
-   :color     text2-color})
-
-(def more-btn
-  {:width          24
-   :height         24
-   :margin-left    16
-   :alignItems     :center
-   :justifyContent :center})
 
 ; New contact
 
@@ -168,22 +106,6 @@
 
 (def qr-input
   {:margin-right 42})
-
-(def enter-address-icon
-  {:margin-left  21
-   :margin-right 21
-   :margin-top   19
-   :width        20
-   :height       18})
-
-(def scan-qr-icon
-  {:margin-left  21
-   :margin-right 20
-   :margin-top   18
-   :width        20
-   :height       20})
-
-;; Contacts search
 
 (def search-container
   {:flex             1

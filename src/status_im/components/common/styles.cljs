@@ -39,17 +39,17 @@
   {:margin-left 72})
 
 (defstyle form-title-container
-  {:padding-left 16
-   :flex 1
+  {:padding-left   16
+   :flex           1
    :flex-direction :row
-   :ios          {:background-color color-white
-                  :padding-top      19
-                  :padding-bottom   15
-                  :margin-top       16}
-   :android      {:background-color color-light-gray
-                  :padding-top      25
-                  :padding-bottom   18
-                  :margin-top       0}})
+   :ios            {:background-color color-white
+                    :padding-top      19
+                    :padding-bottom   15
+                    :margin-top       16}
+   :android        {:background-color color-light-gray
+                    :padding-top      25
+                    :padding-bottom   18
+                    :margin-top       0}})
 
 (defstyle form-title
   {:ios     {:color     text1-color
@@ -63,7 +63,10 @@
           :padding-left 8
           :color        text4-color}))
 
-
 (defstyle form-spacer
   {:ios     {:height 16}
    :android {:height 11}})
+
+(defstyle list-header-footer-spacing
+  {:android {:background-color color-white
+             :height           8}})

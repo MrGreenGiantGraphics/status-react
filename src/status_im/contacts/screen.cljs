@@ -3,7 +3,7 @@
   (:require [reagent.core :as r]
             [clojure.string :as str]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-            [status-im.components.common.common :refer [separator top-shaddow bottom-shaddow]]
+            [status-im.components.common.common :as common]
             [status-im.components.react :refer [view
                                                 text
                                                 image
@@ -12,6 +12,7 @@
                                                 scroll-view
                                                 list-view
                                                 list-item] :as react]
+            [status-im.components.common.common :refer [top-shaddow bottom-shaddow]]
             [status-im.components.native-action-button :refer [native-action-button
                                                                native-action-button-item]]
             [status-im.components.status-bar :refer [status-bar]]
@@ -21,8 +22,8 @@
             [status-im.components.drawer.view :refer [open-drawer]]
             [status-im.components.icons.custom-icons :refer [ion-icon]]
             [status-im.components.context-menu :refer [context-menu]]
-            [status-im.contacts.views.contact :refer [contact-view]]
-            [status-im.utils.platform :refer [platform-specific]]
+            [status-im.components.contact.contact :refer [contact-view]]
+            [status-im.utils.platform :refer [platform-specific ios? android?]]
             [status-im.i18n :refer [label]]
             [status-im.contacts.styles :as st]
             [status-im.components.styles :refer [color-blue
@@ -37,9 +38,8 @@
    {:text (label :t/reorder-groups) :value #(dispatch [:navigate-to :reorder-groups])}])
 
 (defn toolbar-actions []
-  (let [new-contact? (get-in platform-specific [:contacts :new-contact-in-toolbar?])]
-    [(act/search #(dispatch [:navigate-to :group-contacts nil :show-search]))
-     (act/opts (if new-contact? toolbar-options (rest toolbar-options)))]))
+  [(act/search #(dispatch [:navigate-to :group-contacts nil :show-search]))
+   (act/opts (if ios? toolbar-options (rest toolbar-options)))])
 
 (defn toolbar-view []
  [toolbar {:title          (label :t/contacts)
@@ -53,8 +53,8 @@
 
 (defn options-btn [group]
   (let [options [{:value #(dispatch [:navigate-to :edit-group group :contact-group])
-                  :text (label :t/edit-group)}]]
-    [view st/more-btn
+                  :text  (label :t/edit-group)}]]
+    [view
      [context-menu
       [icon :options_gray]
       options]]))
@@ -73,7 +73,23 @@
    (when extended?
      [options-btn group])])
 
-(defn contact-group-form [{:keys [contacts contacts-count group edit?]}]
+(defn contact-options [contact group]
+  (let [options [{:value        #(dispatch [:hide-contact contact])
+                  :text         (label :t/delete-contact)
+                  :destructive? true}]]
+    (if group
+      (conj options
+            {:value #(dispatch [:remove-contact-from-group
+                                (:whisper-identity contact)
+                                (:group-id group)])
+             :text  (label :t/remove-from-group)})
+      options)))
+
+(defn contact-on-press [{:keys [whisper-identity] :as contact}]
+  (dispatch [:send-contact-request! contact])
+  (dispatch [:start-chat whisper-identity {} :navigation-replace]))
+
+(defn contact-group-form [{:keys [contacts contacts-count group edit? click-handler]}]
   (let [subtitle (:name group)]
     [view st/contact-group
      (when subtitle
@@ -81,7 +97,7 @@
      (when subtitle
        [top-shaddow])
      [view st/contacts-list
-      [view st/contact-list-spacing]
+      [common/list-footer]
       (doall
         (map (fn [contact]
                ^{:key contact}
@@ -89,20 +105,14 @@
                 [contact-view
                  {:contact        contact
                   :extended?      edit?
-                  :extend-options (when group
-                                   [{:value        #(dispatch [:hide-contact contact])
-                                     :text         (label :t/delete-contact)
-                                     :destructive? true}
-                                    {:value #(dispatch [:remove-contact-from-group
-                                                        (:whisper-identity contact)
-                                                        (:group-id group)])
-                                     :text (label :t/remove-from-group)}])}]
+                  :on-press       contact-on-press
+                  :extend-options (contact-options contact group)}]
                 (when-not (= contact (last contacts))
-                  [separator st/contact-item-separator])])
+                  [common/list-separator])])
              contacts))]
      (when (< contacts-limit contacts-count)
        [view
-        [separator st/contact-item-separator]
+        [common/list-separator]
         [view st/show-all
          [touchable-highlight {:on-press #(do
                                             (when edit?
@@ -134,7 +144,7 @@
     [ion-icon {:name  :md-create
                :style create-icon}]]])
 
-(defview contact-list [current-view?]
+(defview contact-list [_]
   [contacts             [:get-added-contacts-with-limit contacts-limit]
    contacts-count       [:added-contacts-count]
    edit?                [:get-in [:contacts-ui-props :edit?]]
@@ -157,5 +167,5 @@
      [view st/empty-contact-groups
       [react/icon :group_big st/empty-contacts-icon]
       [text {:style st/empty-contacts-text} (label :t/no-contacts)]])
-   (when (and (not edit?) (get-in platform-specific [:contacts :action-button?]))
+   (when (and android? (not edit?))
        [contacts-action-button])])

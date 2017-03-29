@@ -7,7 +7,7 @@
                                         text
                                         list-view
                                         list-item]]
-    [status-im.components.confirm-button :refer [confirm-button]]
+    [status-im.components.sticky-button :refer [sticky-button]]
     [status-im.components.status-bar :refer [status-bar]]
     [status-im.components.toolbar-new.view :refer [toolbar-with-search]]
     [status-im.utils.listview :refer [to-datasource]]
@@ -71,7 +71,7 @@
       :style                     cst/contacts-list
       :keyboardShouldPersistTaps true}]]
    (when (pos? selected-contacts-count)
-     [confirm-button (label :t/next) #(dispatch [:navigate-to :new-group])])])
+     [sticky-button (label :t/next) #(dispatch [:navigate-to :new-group])])])
 
 (defview add-contacts-toggle-list []
   [contacts [:all-group-not-added-contacts-filtered]
@@ -92,7 +92,7 @@
       :style                     cst/contacts-list
       :keyboardShouldPersistTaps true}]]
    (when (pos? selected-contacts-count)
-     [confirm-button (label :t/save) #(do
+     [sticky-button (label :t/save) #(do
                                         (dispatch [:add-selected-contacts-to-group])
                                         (dispatch [:navigate-back]))])])
 
@@ -115,7 +115,7 @@
       :style                     cst/contacts-list
       :keyboardShouldPersistTaps true}]]
    (when (pos? selected-contacts-count)
-     [confirm-button (label :t/save) #(do
+     [sticky-button (label :t/save) #(do
                                         (dispatch [:add-new-participants])
                                         (dispatch [:navigate-back]))])])
 

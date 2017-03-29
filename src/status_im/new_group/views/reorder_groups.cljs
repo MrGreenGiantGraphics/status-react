@@ -6,7 +6,7 @@
                                                 icon
                                                 touchable-highlight
                                                 list-item]]
-            [status-im.components.confirm-button :refer [confirm-button]]
+            [status-im.components.sticky-button :refer [sticky-button]]
             [status-im.components.status-bar :refer [status-bar]]
             [status-im.components.toolbar-new.view :refer [toolbar]]
             [status-im.components.sortable-list-view :refer [sortable-list-view sortable-item]]
@@ -61,4 +61,4 @@
         :render-row       (fn [row]
                            (sortable-item [group-item row]))
         :render-separator (render-separator (last order))}]]
-     [confirm-button (label :t/save) #(dispatch [:save-group-order])]]))
+     [sticky-button (label :t/save) #(dispatch [:save-group-order])]]))
